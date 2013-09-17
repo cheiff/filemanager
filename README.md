@@ -3,6 +3,7 @@ elfinder-fuelphp
 
 elFinder package for fuel
 
+Work in progress, it does not work yet.
 
 License
 -------
