@@ -2897,6 +2897,23 @@ abstract class elFinderVolumeDriver {
 			case 'imagick':
 				
 				try {
+					$img = \Image::load($path);
+				} catch (Exception $e) {
+
+					return false;
+				}
+
+				$img->resize($size_w, $size_h, true,false);
+					
+				//$img->imagick->resizeImage($size_w, $size_h, \Imagick::FILTER_LANCZOS, true);
+				$result = $img->save($path);
+
+				return $result ? $path : false;
+
+				break;
+/*
+ *
+				try {
 					$img = new imagick($path);
 				} catch (Exception $e) {
 
@@ -2910,7 +2927,7 @@ abstract class elFinderVolumeDriver {
 				return $result ? $path : false;
 
 				break;
-
+ * */
 			case 'gd':
 				$img = self::gdImageCreate($path,$s['mime']);
 
@@ -3035,6 +3052,25 @@ abstract class elFinderVolumeDriver {
 		switch ($this->imgLib) {
 			case 'imagick':
 				try {
+					$img = \Image::load($path);
+				} catch (Exception $e) {
+					return false;
+				}
+        
+/*        $img1 = \Image::forge(array(
+          'bgcolor' => '$bgcolor'
+        ));*/
+        //$img1->resize($width, $height,true,false);
+				$img1 = new \Imagick();
+ 				$img1->imagick->newImage($width, $height, new \ImagickPixel($bgcolor));
+				$img1->imagick->setImageColorspace($img->imagick->getImageColorspace());
+				$img1->imagick->setImageFormat($destformat != null ? $destformat : $img->imagick->getFormat());
+				$img1->imagick->compositeImage( $img, imagick::COMPOSITE_OVER, $x, $y );
+				$result = $img1->save($path);
+				return $result ? $path : false;
+/*
+ * 
+				try {
 					$img = new imagick($path);
 				} catch (Exception $e) {
 					return false;
@@ -3047,7 +3083,7 @@ abstract class elFinderVolumeDriver {
 				$img1->compositeImage( $img, imagick::COMPOSITE_OVER, $x, $y );
 				$result = $img1->writeImage($path);
 				return $result ? $path : false;
-
+ */
 				break;
 
 			case 'gd':
