@@ -1222,7 +1222,11 @@ class elFinder {
 		$volume = $this->volume($target);
 		$files  = isset($args['FILES']['upload']) && is_array($args['FILES']['upload']) ? $args['FILES']['upload'] : array();
 		$result = array('added' => array(), 'header' => empty($args['html']) ? false : 'Content-Type: text/html; charset=utf-8');
-		$paths = $args['upload_path']? $args['upload_path'] : array();
+    if (array_key_exists('upload_path',$args)){
+      $paths = $args['upload_path']? $args['upload_path'] : array();
+    }else{
+      $paths = array();
+    }
 		
 		if (!$volume) {
 			return array('error' => $this->error(self::ERROR_UPLOAD, self::ERROR_TRGDIR_NOT_FOUND, '#'.$target), 'header' => $header);
