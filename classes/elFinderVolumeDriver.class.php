@@ -3061,11 +3061,14 @@ abstract class elFinderVolumeDriver {
           'bgcolor' => '$bgcolor'
         ));*/
         //$img1->resize($width, $height,true,false);
+        //
+        // All this does not work, switching to gd.
 				$img1 = new \Imagick();
- 				$img1->imagick->newImage($width, $height, new \ImagickPixel($bgcolor));
-				$img1->imagick->setImageColorspace($img->imagick->getImageColorspace());
-				$img1->imagick->setImageFormat($destformat != null ? $destformat : $img->imagick->getFormat());
-				$img1->imagick->compositeImage( $img, imagick::COMPOSITE_OVER, $x, $y );
+
+ 				$img1->newImage($width, $height, new \ImagickPixel($bgcolor));
+				$img1->setImageColorspace($img->getImageColorspace());
+				$img1->setImageFormat($destformat != null ? $destformat : $img->getFormat());
+				$img1->compositeImage( $img, imagick::COMPOSITE_OVER, $x, $y );
 				$result = $img1->save($path);
 				return $result ? $path : false;
 /*
